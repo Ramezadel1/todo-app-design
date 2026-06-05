@@ -24,11 +24,11 @@
             </div>
             <div class="col-12">
                 <table class="table table-bordered">
-                    <thead>
+                    <thead class="text-center">
                         <tr>
-                            <th>#</th>
-                            <th>Task</th>
-                            <th>Action</th>
+                            <th>NUM</th>
+                            <th>TASK</th>
+                            <th>ACTION</th>
                         </tr>
                     </thead>
                     <tbody>
