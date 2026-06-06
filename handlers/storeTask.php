@@ -1,17 +1,29 @@
 <?php
+session_start();
 
-    require_once '../Database/connection.php';
-    
+$host = 'localhost';
+$username = 'root';
+$password = 'Younis@1911';
+$db_name = 'todo_app';
 
-    if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['title'])) {
-        $title = trim(htmlspecialchars(htmlentities($_POST['title'])));
-        $sql = "INSERT INTO `tasks` (`title`) VALUES ('$title')";
-        $result = mysqli_query($conn, $sql);
-        if ($result) {
-            header('Location: ../design/index.php');
-        } else {
-            echo "Error: " . mysqli_error($conn);
-        }
-    } else {
-        header('Location: ../design/index.php');
+$conn = mysqli_connect($host, $username, $password, $db_name);
+
+if (!$conn) {
+    die("Connection failed: " . mysqli_connect_error());
+}
+
+if ($_SERVER['REQUEST_METHOD'] == 'POST' && isset($_POST['title'])) {
+    $title = trim(htmlspecialchars($_POST['title']));
+    $sql = mysqli_prepare($conn, "INSERT INTO `tasks` (`title`) VALUES (?)");
+    mysqli_stmt_bind_param($sql, "s", $title);
+    $result = mysqli_stmt_execute($sql);
+
+    if ($result) {
+        $_SESSION['success'] = 'Task added successfully';
     }
+    header('Location: ../design/index.php');
+    exit;
+} else {
+    header('Location: ../design/index.php');
+    exit;
+}
